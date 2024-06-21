@@ -1,14 +1,14 @@
-const Header = ({ course }) => <h1>{course}</h1>
+const Header = ({ course }) => <h2>{course}</h2>
 const Content = ({ content }) => {
   return (
-    <>
+    <ul>
     {content.map(part => 
-      <Part  key={part.name} title={part.name} nro_exercises={part.exercises} />
+      <Part  key={part.id} title={part.name} nro_exercises={part.exercises} />
     )}
-    </>
+    </ul>
   )
 }
-const Part = ({ title, nro_exercises }) => <p>{title} {nro_exercises}</p>
+const Part = ({ title, nro_exercises }) => <li>{title} {nro_exercises}</li>
 const Total = ({ sum }) => <h3>total of exercises {sum}</h3>
 
 const Course = ({ course }) => {
