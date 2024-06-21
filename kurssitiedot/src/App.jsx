@@ -1,7 +1,5 @@
 import Course from "./components/Course"
 
-const Total = ({ sum }) => <p>Number of exercises {sum}</p>
-
 const App = () => {
   const course = {
     name: 'Half Stack application development',
@@ -28,7 +26,6 @@ const App = () => {
   return (
     <div>
       <Course course={course} />
-      <Total sum={course.parts.reduce((ex, {exercises}) => ex + exercises, 0)} />
     </div>
   )
 }
