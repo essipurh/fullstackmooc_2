@@ -36,6 +36,8 @@ const App = () => {
       .update(updatedPerson.id, updatedPerson)
       .then(response => {
         setPersons(persons.map(person => person.id !== updatedPerson.id ? person : response))
+        setMessage({type: 'confirmation', text:`Updated ${response.name}`})
+        setTimeout(() => {setMessage(null)}, 5000)
       })
       .catch(error => {
         console.log(error)
@@ -63,17 +65,18 @@ const App = () => {
         resetInputs()
         setMessage({type: 'confirmation', text:`Added ${response.name}`})
         setTimeout(() => {setMessage(null)}, 5000)
-      })
-      
+      }) 
   }
 
   const deletePerson = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
       personService
       .deleteObject(person.id)
-      .then(deleted => {
-        const updatedPersons = persons.filter(({id}) => id !== deleted.id)
+      .then(response => {
+        const updatedPersons = persons.filter(({id}) => id !== response)
         setPersons(updatedPersons)
+        setMessage({type: 'confirmation', text:`Deleted ${person.name}`})
+        setTimeout(() => {setMessage(null)}, 5000)
         })
     }
   }
