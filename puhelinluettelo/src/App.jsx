@@ -11,7 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searched, setSearched] = useState('')
-  const [notificationMessage, setMessage] = useState({type: 'some', text: 'some'})
+  const [notificationMessage, setMessage] = useState({type: '', text: ''})
 
   useEffect(() => {
     personService
