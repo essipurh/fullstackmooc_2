@@ -38,12 +38,17 @@ const App = () => {
         setPersons(persons.map(person => person.id !== updatedPerson.id ? person : response))
         setMessage({type: 'confirmation', text:`Updated ${response.name}`})
         setTimeout(() => {setMessage(null)}, 5000)
+        resetInputs()
       })
       .catch(error => {
-        console.log(error)
-        setMessage({type: 'error', text: `The person ${updatedPerson.name} was already deleted.`})
-        setTimeout(() => {setMessage(null)}, 5000)
-        setPersons(persons.filter(person => person.id !== updatedPerson.id))
+        if (error.response.status === 400) {
+          setMessage({type: 'error', text: `Must include phonenumber.`})
+          setTimeout(() => {setMessage(null)}, 5000)
+        } else  if (error.response.status === 404) {
+          setMessage({type: 'error', text: "Person not found."})
+          setTimeout(() => {setMessage(null)}, 5000)
+          setPersons(persons.filter(person => person.id !== updatedPerson.id))
+        }
       })
   }
 
@@ -53,7 +58,6 @@ const App = () => {
       if (window.confirm(`${newName} is already in the phonebook replace the old number with a new one?`)) {
         updatePerson()
       }
-      resetInputs()
       return
     }
     const newPerson = {name: newName, number: newNumber}
@@ -66,6 +70,10 @@ const App = () => {
         setMessage({type: 'confirmation', text:`Added ${response.name}`})
         setTimeout(() => {setMessage(null)}, 5000)
       }) 
+      .catch(error => {
+        setMessage({type: 'error', text: error.response.data.error})
+        setTimeout(() => {setMessage(null)}, 5000)
+      })
   }
 
   const deletePerson = (person) => {
@@ -78,6 +86,10 @@ const App = () => {
         setMessage({type: 'confirmation', text:`Deleted ${person.name}`})
         setTimeout(() => {setMessage(null)}, 5000)
         })
+      .catch(error => {
+        setMessage({type: 'error', text: error.response.data.error})
+        setTimeout(() => {setMessage(null)}, 5000)
+      })
     }
   }
   const personsToShow = searched === ''  ? persons : persons.filter(({name}) => name.toLocaleLowerCase().match((`^${searched.toLowerCase()}`)))

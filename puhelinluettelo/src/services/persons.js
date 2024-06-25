@@ -11,12 +11,14 @@ const create = newObject => {
   return  request.then(response => response.data)
 }
 const update = (id, newObject) =>  { 
-  const request = axios.put(`${baseUrl}/:${id}`, newObject)
+  const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then(response => response.data)
 }
 const deleteObject = (id) => {
   const request = axios.delete(`${baseUrl}/${id}`)
-  return request.then(response => Number(response.request.responseURL.split('/').at(-1))) // vois varmaan vaan palauttaa pyynnön mukana mennen id:n
+  return request.then(response => {
+    console.log(response)
+    return id}) // vois varmaan vaan palauttaa pyynnön mukana mennen id:n
 }
 
 
