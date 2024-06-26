@@ -23,6 +23,12 @@ const App = () => {
 
 
   // functions
+  const uiErrorMessage = (error) => {
+    console.log(Object.values(error.response.data.error))
+    const errorMessage = Object.values(error.response.data.error).map(val => val.message).join(' ')
+    setMessage({type: 'error', text: errorMessage})
+    setTimeout(() => {setMessage(null)}, 5000)
+  }
   const handleSearch = (event) => setSearched(event.target.value)
   const handleNewName = (event) => setNewName(event.target.value)
   const handleNewNumber = (event) => setNewNumber(event.target.value)
@@ -41,14 +47,8 @@ const App = () => {
         resetInputs()
       })
       .catch(error => {
-        if (error.response.status === 400) {
-          setMessage({type: 'error', text: `Must include phonenumber.`})
-          setTimeout(() => {setMessage(null)}, 5000)
-        } else  if (error.response.status === 404) {
-          setMessage({type: 'error', text: "Person not found."})
-          setTimeout(() => {setMessage(null)}, 5000)
-          setPersons(persons.filter(person => person.id !== updatedPerson.id))
-        }
+        uiErrorMessage(error)
+        if (error.response.status === 404) { setPersons(persons.filter(person => person.id !== updatedPerson.id)) }
       })
   }
 
@@ -71,8 +71,7 @@ const App = () => {
         setTimeout(() => {setMessage(null)}, 5000)
       }) 
       .catch(error => {
-        setMessage({type: 'error', text: error.response.data.error})
-        setTimeout(() => {setMessage(null)}, 5000)
+        uiErrorMessage(error)
       })
   }
 
@@ -87,8 +86,7 @@ const App = () => {
         setTimeout(() => {setMessage(null)}, 5000)
         })
       .catch(error => {
-        setMessage({type: 'error', text: error.response.data.error})
-        setTimeout(() => {setMessage(null)}, 5000)
+        uiErrorMessage(error)
       })
     }
   }
